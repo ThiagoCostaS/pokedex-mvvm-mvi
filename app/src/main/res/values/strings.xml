@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">pokedex-mvvm</string>
+    <string name="pokedex">Pokedex</string>
+    <string name="escolha_seu_pokemon">Escolha seu pokemon</string>
+</resources>
