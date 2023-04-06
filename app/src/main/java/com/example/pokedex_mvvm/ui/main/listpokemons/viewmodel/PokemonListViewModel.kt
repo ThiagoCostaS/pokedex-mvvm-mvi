@@ -1,5 +1,6 @@
 package com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +16,9 @@ class PokemonListViewModel(
     private val getRandomsPokemonsUseCase: GetRandomPokemonUseCase
 ) : ViewModel() {
 
-    val viewState = MutableLiveData<PokemonListViewState>()
+    private val _viewState = MutableLiveData<PokemonListViewState>()
+    val viewState: LiveData<PokemonListViewState> = _viewState
+
     private var curPage = PAGE_INITIAL
 
     fun dispatchAction(action: PokemonListViewAction) {
@@ -27,7 +30,7 @@ class PokemonListViewModel(
     }
 
     private fun getPokemonsList() = viewModelScope.launch {
-        viewState.postValue(PokemonListViewState.Loading)
+        _viewState.postValue(PokemonListViewState.Loading)
         runCatching(
             dispatcher = Dispatchers.Default,
             execute = {
@@ -37,26 +40,26 @@ class PokemonListViewModel(
                 )
             },
             onFailure = {
-                viewState.postValue(PokemonListViewState.Error)
+                _viewState.postValue(PokemonListViewState.Error)
             },
             onSuccess = { pokemon ->
-                viewState.postValue(PokemonListViewState.ShowPokemonList(pokemon))
+                _viewState.postValue(PokemonListViewState.ShowPokemonList(pokemon))
             }
         )
     }
 
     private fun getRandomsPokemons() = viewModelScope.launch {
-        viewState.postValue(PokemonListViewState.Loading)
+       _viewState.postValue(PokemonListViewState.Loading)
         runCatching(
             dispatcher = Dispatchers.Default,
             execute = {
                 getRandomsPokemonsUseCase()
             },
             onFailure = {
-                viewState.postValue(PokemonListViewState.Error)
+                _viewState.postValue(PokemonListViewState.Error)
             },
             onSuccess = { pokemonRandom ->
-                viewState.postValue(
+                _viewState.postValue(
                     PokemonListViewState.ShowRandomPokemonList(
                         PokemonDetailsDomain(
                             name = pokemonRandom.name,
