@@ -13,16 +13,16 @@ import com.example.pokedex_mvvm.customViews.DialogRandomPokemon
 import com.example.pokedex_mvvm.databinding.FragmentPokemonsListBinding
 import com.example.pokedex_mvvm.domain.model.PokemonDetailsDomain
 import com.example.pokedex_mvvm.ui.main.listpokemons.adapter.ListPokemonAdapter
-import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.ListPokemonViewAction
-import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.ListPokemonViewModel
-import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.ListPokemonViewState
+import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewAction
+import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewModel
+import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ListPokemonsFragment : Fragment() {
+class PokemonListFragment : Fragment() {
 
     private lateinit var binding: FragmentPokemonsListBinding
     private var searchView: SearchView? = null
-    private val viewModel: ListPokemonViewModel by viewModel()
+    private val viewModel: PokemonListViewModel by viewModel()
     private lateinit var adapterList: ListPokemonAdapter
 
     override fun onCreateView(
@@ -79,10 +79,10 @@ class ListPokemonsFragment : Fragment() {
     private fun configObserver() {
         viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
             when (viewState) {
-                ListPokemonViewState.Error -> goToScreenError()
-                ListPokemonViewState.Loading -> showLoading()
-                is ListPokemonViewState.ShowPokemonList -> handleListPokemons(viewState.pokemonList)
-                is ListPokemonViewState.ShowRandomPokemon ->
+                PokemonListViewState.Error -> goToScreenError()
+                PokemonListViewState.Loading -> showLoading()
+                is PokemonListViewState.ShowPokemonList -> handleListPokemons(viewState.pokemonList)
+                is PokemonListViewState.ShowRandomPokemonList ->
                     showDialogRandomPokemon(viewState.pokemonRandom)
             }
         }
@@ -130,13 +130,13 @@ class ListPokemonsFragment : Fragment() {
 
 
     private fun getListPokemons() {
-        viewModel.dispatchAction(ListPokemonViewAction.GetPokemonsList)
+        viewModel.dispatchAction(PokemonListViewAction.GetPokemonsList)
     }
 
     private fun getPokemonRandom() {
         hideLoading()
         binding.floatingPokeball.setOnClickListener {
-            viewModel.dispatchAction(ListPokemonViewAction.GetRandomPokemon)
+            viewModel.dispatchAction(PokemonListViewAction.GetRandomPokemon)
         }
     }
 }

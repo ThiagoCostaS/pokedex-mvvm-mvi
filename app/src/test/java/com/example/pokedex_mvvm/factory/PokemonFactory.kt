@@ -15,7 +15,7 @@ object PokemonFactory {
 
     val modelListTotalPokemon = PokemonDomain(
         results = (1..1154).map {
-           PokemonInfoDomain(
+            PokemonInfoDomain(
                 name = "Pikachu",
                 url = "https://pokeapi.co/api/v2/pokemon/1/"
             )
