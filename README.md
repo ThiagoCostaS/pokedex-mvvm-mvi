@@ -34,6 +34,7 @@
 - **[Retrofit](https://github.com/square/retrofit): Construa as APIs REST e dados de rede de paginação**
 - **[Gson](https://github.com/google/gson): Gson é uma biblioteca Java que pode ser usada para converter objetos Java em sua representação JSON.**
 - **[Glide](https://github.com/bumptech/glide): Carregar imagens da internet.**
+- **[Shimmer](https://github.com/facebook/shimmer-android): Efeito visual animado que é usado para indicar que um componente ou página está carregando informações ou processando dados.**
 - **[Timber](https://github.com/JakeWharton/timber): Este é um logger com uma API pequena e extensível que fornece utilidade em cima da classe Log normal do Android.**
 ## Arquitetura
 
