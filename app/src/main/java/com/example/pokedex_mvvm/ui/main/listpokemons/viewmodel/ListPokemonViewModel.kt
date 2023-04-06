@@ -73,7 +73,7 @@ class ListPokemonViewModel(
     }
 
     companion object {
-        const val PAGE_SIZE = 50
+        const val PAGE_SIZE = 25
         const val PAGE_INITIAL = 0
     }
 }
