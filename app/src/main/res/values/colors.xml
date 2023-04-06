@@ -8,6 +8,23 @@
     <color name="black">#FF000000</color>
     <color name="red_color">#a30000</color>
     <color name="red_light">#DC3E3E</color>
-
     <color name="white">#FFFFFFFF</color>
+    <color name="colorNormal">#A8A878</color>
+    <color name="colorFire">#EE8130</color>
+    <color name="colorWater">#6390F0</color>
+    <color name="colorElectric">#F7D02C</color>
+    <color name="colorGrass">#7AC74C</color>
+    <color name="colorIce">#96D9D6</color>
+    <color name="colorFighting">#C22E28</color>
+    <color name="colorPoison">#A33EA1</color>
+    <color name="colorGround">#E2BF65</color>
+    <color name="colorFlying">#A98FF3</color>
+    <color name="colorPsychic">#F95587</color>
+    <color name="colorBug">#A6B91A</color>
+    <color name="colorRock">#B6A136</color>
+    <color name="colorGhost">#735797</color>
+    <color name="colorDragon">#6F35FC</color>
+    <color name="colorDark">#705746</color>
+    <color name="colorSteel">#B7B7CE</color>
+    <color name="colorFairy">#D685AD</color>
 </resources>

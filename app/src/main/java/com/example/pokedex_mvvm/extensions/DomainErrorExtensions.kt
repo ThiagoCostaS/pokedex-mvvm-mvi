@@ -1,4 +1,4 @@
-package com.example.pokedex_mvvm.extension
+package com.example.pokedex_mvvm.extensions
 
 import com.example.pokedex_mvvm.utils.AuthenticationException
 import com.example.pokedex_mvvm.utils.UnexpectedException

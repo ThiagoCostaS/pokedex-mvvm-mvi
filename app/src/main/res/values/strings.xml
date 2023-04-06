@@ -2,4 +2,9 @@
     <string name="app_name">pokedex-mvvm</string>
     <string name="pokedex">Pokedex</string>
     <string name="escolha_seu_pokemon">Escolha seu pokemon</string>
+    <string name="metros">Metros</string>
+    <string name="kg">Kg</string>
+    <string name="escolho_voce">eu escolho vocÊ !!!</string>
+    <string name="txt_error">Ops, algo de errado aconteceu …</string>
+    <string name="search_pokemon">Pesquisar Pokemon</string>
 </resources>

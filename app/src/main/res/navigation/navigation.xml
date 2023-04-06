@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/listPokemonsFragment">
+
+    <fragment
+        android:id="@+id/listPokemonsFragment"
+        android:name="com.example.pokedex_mvvm.ui.main.listpokemons.ListPokemonsFragment"
+        android:label="fragment_list_pokemons"
+        tools:layout="@layout/fragment_pokemons_list" >
+        <action
+            android:id="@+id/action_listPokemonsFragment_to_pokemonInfoFragment"
+            app:destination="@id/pokemonInfoFragment"
+            app:enterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_listPokemonsFragment_to_pokemonsFragmentError"
+            app:destination="@id/pokemonsFragmentError"
+            app:enterAnim="@android:anim/fade_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonInfoFragment"
+        android:name="com.example.pokedex_mvvm.ui.main.pokemoninfo.PokemonInfoFragment"
+        android:label="PokemonInfoFragment"
+        tools:layout="@layout/fragment_pokemon_info">
+        <action
+            android:id="@+id/action_pokemonInfoFragment_to_listPokemonsFragment"
+            app:destination="@id/listPokemonsFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_pokemonInfoFragment_to_pokemonsFragmentError"
+            app:destination="@id/pokemonsFragmentError"
+            app:enterAnim="@android:anim/fade_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonsFragmentError"
+        android:name="com.example.pokedex_mvvm.ui.main.error.PokemonsFragmentError"
+        android:label="PokemonsFragmentError"
+        tools:layout="@layout/fragment_pokemon_error">
+        <action
+            android:id="@+id/action_pokemonsFragmentError_to_pokemonInfoFragment"
+            app:destination="@id/pokemonInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_pokemonsFragmentError_to_listPokemonsFragment"
+            app:destination="@id/listPokemonsFragment"
+            app:enterAnim="@android:anim/slide_in_left" />
+    </fragment>
+</navigation>

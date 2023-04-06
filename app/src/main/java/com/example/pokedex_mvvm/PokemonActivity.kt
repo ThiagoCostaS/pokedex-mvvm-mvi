@@ -1,9 +1,7 @@
 package com.example.pokedex_mvvm
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Window
-import com.example.pokedex_mvvm.ui.main.listpokemons.ListPokemonsFragment
+import androidx.appcompat.app.AppCompatActivity
 
 class PokemonActivity : AppCompatActivity() {
 
@@ -11,10 +9,7 @@ class PokemonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, ListPokemonsFragment.newInstance())
-                .commitNow()
-        }
+
     }
+    override fun onBackPressed() = Unit
 }

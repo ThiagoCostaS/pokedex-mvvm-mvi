@@ -1,19 +1,17 @@
 package com.example.pokedex_mvvm.ui.main.listpokemons
 
 import android.os.Bundle
+import android.view.*
+import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.GridLayout
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.pokedex_mvvm.R
 import com.example.pokedex_mvvm.customViews.DialogRandomPokemon
-import com.example.pokedex_mvvm.databinding.CustomDialogPokemonRandomBinding
-import com.example.pokedex_mvvm.databinding.FragmentListPokemonsBinding
-import com.example.pokedex_mvvm.domain.mapper.PokemonInfoDomain
+import com.example.pokedex_mvvm.databinding.FragmentPokemonsListBinding
+import com.example.pokedex_mvvm.domain.model.PokemonDetailsDomain
 import com.example.pokedex_mvvm.ui.main.listpokemons.adapter.ListPokemonAdapter
 import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.ListPokemonViewAction
 import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.ListPokemonViewModel
@@ -22,21 +20,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListPokemonsFragment : Fragment() {
 
-    private lateinit var binding: FragmentListPokemonsBinding
-
-
+    private lateinit var binding: FragmentPokemonsListBinding
+    private var searchView: SearchView? = null
     private val viewModel: ListPokemonViewModel by viewModel()
-
-
-    companion object {
-        fun newInstance() = ListPokemonsFragment()
-    }
+    private lateinit var adapterList: ListPokemonAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentListPokemonsBinding.inflate(
+        binding = FragmentPokemonsListBinding.inflate(
             inflater,
             container,
             false
@@ -46,20 +39,51 @@ class ListPokemonsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        setHasOptionsMenu(true)
         configObserver()
         getListPokemons()
         getPokemonRandom()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        this.searchView = searchItem.actionView as SearchView
+        searchView?.queryHint = "Nome/Tipo"
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    adapterList.filterList(newText)
+                }
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_search -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun configObserver() {
         viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
             when (viewState) {
-                ListPokemonViewState.Error -> "TODO()"
+                ListPokemonViewState.Error -> goToScreenError()
                 ListPokemonViewState.Loading -> showLoading()
                 is ListPokemonViewState.ShowPokemonList -> handleListPokemons(viewState.pokemonList)
-                is ListPokemonViewState.ShowRandomPokemon -> {
+                is ListPokemonViewState.ShowRandomPokemon ->
                     showDialogRandomPokemon(viewState.pokemonRandom)
-                }
             }
         }
     }
@@ -78,19 +102,27 @@ class ListPokemonsFragment : Fragment() {
         }
     }
 
-    private fun handleListPokemons(listPokemons: List<PokemonInfoDomain>) {
-        hideLoading()
-        val adapter = ListPokemonAdapter(listPokemons) { itemPokemonInfo ->
-            Toast.makeText(requireContext(), "Teste cliquee item", Toast.LENGTH_SHORT).show()
-        }
+    private fun goToScreenError() {
+        findNavController().navigate(R.id.action_listPokemonsFragment_to_pokemonsFragmentError)
+    }
 
+    private fun handleListPokemons(listPokemons: List<PokemonDetailsDomain>) {
+        hideLoading()
+        adapterList = ListPokemonAdapter(listPokemons) { itemPokemonInfo ->
+            val bundle = bundleOf("namePokemon" to itemPokemonInfo.name)
+            findNavController().navigate(
+                R.id.action_listPokemonsFragment_to_pokemonInfoFragment,
+                bundle
+            )
+        }
         binding.rvPokemons.apply {
+            adapter = adapterList
             layoutManager = GridLayoutManager(requireContext(), 2)
-            this.adapter = adapter
+
         }
     }
 
-    private fun showDialogRandomPokemon(pokemonRandom: PokemonInfoDomain) {
+    private fun showDialogRandomPokemon(pokemonRandom: PokemonDetailsDomain) {
         hideLoading()
         val dialogRandomPokemon = DialogRandomPokemon(pokemonRandom)
         dialogRandomPokemon.show(requireActivity().supportFragmentManager, DialogRandomPokemon.TAG)
@@ -102,6 +134,7 @@ class ListPokemonsFragment : Fragment() {
     }
 
     private fun getPokemonRandom() {
+        hideLoading()
         binding.floatingPokeball.setOnClickListener {
             viewModel.dispatchAction(ListPokemonViewAction.GetRandomPokemon)
         }

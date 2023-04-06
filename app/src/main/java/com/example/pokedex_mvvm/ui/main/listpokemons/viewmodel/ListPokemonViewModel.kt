@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex_mvvm.core.runCatching
 import com.example.pokedex_mvvm.data.usecases.GetAllPokemonsUseCase
-import com.example.pokedex_mvvm.data.usecases.GetPokemonsInfoUseCase
 import com.example.pokedex_mvvm.data.usecases.GetRandomPokemonUseCase
-import com.example.pokedex_mvvm.domain.mapper.PokemonInfoDomain
+import com.example.pokedex_mvvm.domain.model.PokemonDetailsDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -41,7 +40,7 @@ class ListPokemonViewModel(
                 viewState.postValue(ListPokemonViewState.Error)
             },
             onSuccess = { pokemon ->
-                viewState.postValue(ListPokemonViewState.ShowPokemonList(pokemon.results))
+                viewState.postValue(ListPokemonViewState.ShowPokemonList(pokemon))
             }
         )
     }
@@ -59,18 +58,22 @@ class ListPokemonViewModel(
             onSuccess = { pokemonRandom ->
                 viewState.postValue(
                     ListPokemonViewState.ShowRandomPokemon(
-                        PokemonInfoDomain(
-                            pokemonRandom.name,
-                            pokemonRandom.url
+                        PokemonDetailsDomain(
+                            name = pokemonRandom.name,
+                            sprites = pokemonRandom.sprites,
+                            types = pokemonRandom.types,
+                            height = pokemonRandom.height,
+                            weight = pokemonRandom.weight
                         )
                     )
                 )
+
             }
         )
     }
 
     companion object {
-        const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 50
         const val PAGE_INITIAL = 0
     }
 }

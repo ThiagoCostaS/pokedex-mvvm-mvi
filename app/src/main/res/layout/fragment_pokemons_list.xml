@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.listpokemons.ListPokemonsFragment">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/red_light"
+        app:title="Pokedex"
+        app:titleTextColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <View
         android:id="@+id/view_top_content"
         android:layout_width="match_parent"
@@ -14,42 +26,30 @@
         android:background="@color/red_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <TextView
-        android:id="@+id/pokemon_title_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/roboto_bold"
-        android:text="@string/pokedex"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/view_top_content"
-        app:layout_constraintTop_toTopOf="@id/view_top_content" />
 
     <TextView
         android:id="@+id/pokemon_subtitle_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="14dp"
+
         android:fontFamily="@font/roboto_regular"
         android:text="@string/escolha_seu_pokemon"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="@id/view_top_content"
-        app:layout_constraintTop_toBottomOf="@id/pokemon_title_tv" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="98dp" />
+        app:layout_constraintGuide_begin="85dp"
+        app:layout_constraintTop_toBottomOf="@id/pokemon_subtitle_tv" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
@@ -70,8 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="10dp"
-            android:topLeftRadius="8dp"
-            android:topRightRadius="8dp"
+            android:topLeftRadius="12dp"
+            android:topRightRadius="12dp"
             app:cardBackgroundColor="#221F1F"
             app:cardCornerRadius="8dp"
             app:cardElevation="10dp">
