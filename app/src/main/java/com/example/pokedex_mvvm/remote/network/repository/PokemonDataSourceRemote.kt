@@ -1,4 +1,4 @@
-package com.example.pokedex_mvvm.remote.repository
+package com.example.pokedex_mvvm.remote.network.repository
 
 import com.example.pokedex_mvvm.domain.model.PokemonDetailsDomain
 import com.example.pokedex_mvvm.domain.mapper.PokemonDomain
