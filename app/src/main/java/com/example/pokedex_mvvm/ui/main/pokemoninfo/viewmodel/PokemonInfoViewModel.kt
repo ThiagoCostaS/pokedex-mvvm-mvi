@@ -1,22 +1,19 @@
 package com.example.pokedex_mvvm.ui.main.pokemoninfo.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokedex_mvvm.core.runCatching
 import com.example.pokedex_mvvm.core.runCatchingWithFlow
 import com.example.pokedex_mvvm.data.usecases.GetPokemonsInfoUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PokemonInfoViewModel(
     private val getPokemonsInfoUseCase: GetPokemonsInfoUseCase
 ) : ViewModel() {
 
-    val viewState_ = MutableStateFlow<PokemonInfoViewState?>(
+   private val viewState_ = MutableStateFlow<PokemonInfoViewState?>(
             null
     )
 
