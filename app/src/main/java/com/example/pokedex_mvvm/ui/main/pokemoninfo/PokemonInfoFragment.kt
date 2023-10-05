@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokedex_mvvm.R
@@ -15,6 +16,7 @@ import com.example.pokedex_mvvm.ui.main.pokemoninfo.adapter.PokemonTypeAdapter
 import com.example.pokedex_mvvm.ui.main.pokemoninfo.viewmodel.PokemonInfoViewAction
 import com.example.pokedex_mvvm.ui.main.pokemoninfo.viewmodel.PokemonInfoViewModel
 import com.example.pokedex_mvvm.ui.main.pokemoninfo.viewmodel.PokemonInfoViewState
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PokemonInfoFragment : Fragment() {
@@ -43,11 +45,14 @@ class PokemonInfoFragment : Fragment() {
     }
 
     private fun configObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
-            when (viewState) {
-                PokemonInfoViewState.Error -> goToScreenError()
-                PokemonInfoViewState.Loading -> showLoading()
-                is PokemonInfoViewState.ShowInfoPokemon -> handlePokemonInfo(viewState.pokemonInfo)
+        lifecycleScope.launch {
+            viewModel.viewState.collect { viewState ->
+                when (viewState) {
+                    PokemonInfoViewState.Error -> goToScreenError()
+                    PokemonInfoViewState.Loading -> showLoading()
+                    is PokemonInfoViewState.ShowInfoPokemon -> handlePokemonInfo(viewState.pokemonInfo)
+                    null -> Unit
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex_mvvm.R
@@ -16,6 +17,9 @@ import com.example.pokedex_mvvm.ui.main.listpokemons.adapter.ListPokemonAdapter
 import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewAction
 import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewModel
 import com.example.pokedex_mvvm.ui.main.listpokemons.viewmodel.PokemonListViewState
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PokemonListFragment : Fragment() {
@@ -77,15 +81,20 @@ class PokemonListFragment : Fragment() {
     }
 
     private fun configObserver() {
-        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
-            when (viewState) {
-                PokemonListViewState.Error -> goToScreenError()
-                PokemonListViewState.Loading -> showLoading()
-                is PokemonListViewState.ShowPokemonList -> handleListPokemons(viewState.pokemonList)
-                is PokemonListViewState.ShowRandomPokemonList ->
-                    showDialogRandomPokemon(viewState.pokemonRandom)
+        lifecycleScope.launch {
+            viewModel.viewState.collect{ viewState ->
+                when (viewState) {
+                    PokemonListViewState.Error -> goToScreenError()
+                    PokemonListViewState.Loading -> showLoading()
+                    is PokemonListViewState.ShowPokemonList -> handleListPokemons(viewState.pokemonList)
+                    is PokemonListViewState.ShowRandomPokemonList ->
+                        showDialogRandomPokemon(viewState.pokemonRandom)
+
+                    null -> Unit
+                }
             }
         }
+
     }
 
     private fun showLoading() {

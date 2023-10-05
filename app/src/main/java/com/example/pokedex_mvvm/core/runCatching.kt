@@ -21,3 +21,20 @@ suspend fun <T, R> T.runCatching(
             onFailure(it)
         }
 }
+
+suspend fun <T, R> T.runCatchingWithFlow(
+
+        execute: suspend () -> R,
+        onSuccess: suspend (R) -> Unit = {},
+        onFailure: suspend (Throwable) -> Unit = {}
+) {
+    runCatching {
+            execute()
+    }.onSuccess {
+        onSuccess(it)
+    }
+            .onFailure {
+                Timber.e(it)
+                onFailure(it)
+            }
+}
